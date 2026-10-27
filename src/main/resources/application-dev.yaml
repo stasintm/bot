@@ -1,0 +1,12 @@
+bot:
+  name: StasintTestBot
+  token: 8972301588:AAEbpMSp7PWc4jQKUbL8WfrpIFbq-2GYpsU
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+url:
+  employee: http://localhost:8080/
