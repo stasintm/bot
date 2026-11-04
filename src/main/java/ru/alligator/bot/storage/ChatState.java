@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 import ru.alligator.bot.flow.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -26,6 +27,14 @@ public class ChatState {
 
     @Indexed
     private UUID employeeId;
+
+    private LocalDate startVacationDate;
+    private LocalDate endVacationDate;
+
+    public void resetVacationDates() {
+        startVacationDate = null;
+        endVacationDate = null;
+    }
 
     public boolean isApproved() {
         return employeeId != null;

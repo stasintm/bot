@@ -6,11 +6,34 @@ spring:
       host: redis
       port: 6379
 
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.StdDateFormat
+    deserialization:
+      fail-on-unknown-properties: false
+  kafka:
+    bootstrapServers: kafka:9092
+    consumer:
+      topic: vacation
+      group-id: tgbotGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 10
+      heartbeat-interval-ms: 6000
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: ru.alligator.bot.dto.VacationTo
+    listener:
+      ack-mode: record
+
 server:
   port: 8079
 
 url:
   employee: http://employee:8080/
+  vacation: http://vacation:8081/
 
 feign:
   client:
