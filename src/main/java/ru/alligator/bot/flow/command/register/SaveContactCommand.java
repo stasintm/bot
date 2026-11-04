@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import ru.alligator.bot.feign.EmployeeFeignClient;
 import ru.alligator.bot.flow.EntryBot;
 import ru.alligator.bot.flow.TgUtils;
 import ru.alligator.bot.flow.command.Command;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SaveContactCommand implements Command {
 
-    //private final EmployeeFeignClient employeeFeignClient;
+    private final EmployeeFeignClient employeeFeignClient;
 
     @Override
     public String getName() {
@@ -41,7 +42,8 @@ public class SaveContactCommand implements Command {
             phoneNumber = normalizePhoneNumber(phoneNumber);
             chatState.setPhone(phoneNumber);
             TgUtils.sendMessage(chatState.getChatId().toString(), "Номер принят", sender);
-            chatState.setEmployeeId(UUID.randomUUID());
+            employeeFeignClient.findEmployees(phoneNumber).stream().findFirst()
+                    .ifPresent(employeeTo -> chatState.setEmployeeId(employeeTo.getId()));
         }
         if (!chatState.isApproved()) {
             TgUtils.sendMessage(chatState.getChatId().toString(), "Пользователь не найден в БД компании!",

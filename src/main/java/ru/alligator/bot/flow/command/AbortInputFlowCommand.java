@@ -34,6 +34,7 @@ public class AbortInputFlowCommand implements Command {
 
     @Override
     public void acceptMessage(String message, ChatState chatState, TelegramLongPollingBot sender) {
+        chatState.resetVacationDates();
         Command.enterStage(Stage.AUTH_MAIN_MENU, chatState, sender);
     }
 }
